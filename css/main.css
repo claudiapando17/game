@@ -1,3 +1,42 @@
 body {
-    background-color: pink;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(199, 214, 238);
 }
+
+#board {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+}
+
+#player {
+    background-color: rgb(240, 22, 95);
+    position: absolute;
+}
+
+.obstacle {
+    background-color: rgb(159, 255, 50);
+    position: absolute;
+}
+
+.biggerObstacle {
+    background-color: rgb(18, 187, 230);
+    position: absolute;
+}
+
+#page-gameover {
+    text-align: center;
+    background-color: rgb(166, 161, 171);
+}
+
+#scorePoints {
+    text-align: center;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 25px;
+    position: relative;
+    margin: 10px;
+}
+
