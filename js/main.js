@@ -1,10 +1,33 @@
 
 let counter; // count the score during the game
 let score = 0;
+let stoneStop;
+let stone = 0;
+let trunkStop;
+let trunk = 0;
+
 const scoreContainer = document.querySelector(".score")
-const endGameContainer = document.querySelector("#gameOver")
-const gameBoard = document.querySelector("#board")
-const restartButton = document.querySelector("#restart")
+const endGameContainer = document.querySelector("#gameOver") // game over
+const gameBoard = document.querySelector("#board")// game over
+const restartButton = document.querySelector("#restart")// game over
+
+const startGameContainer = document.querySelector("#gameStart")// game start
+const startButton = document.querySelector("#start")// game start
+
+
+
+
+
+startGameContainer.style.display = "block";
+startButton.style.display = "block";
+gameBoard.style.display = "none" ;
+
+
+
+
+
+
+
 
 class Player {
     constructor() {
@@ -97,7 +120,7 @@ setInterval(() => {
 
 
 // update all obstacles
-setInterval(() => {
+stoneStop = setInterval(() => {
     obstacleStoneArr.forEach((obstacleStoneInstance) => {
 
         // move current obstacle
@@ -110,16 +133,11 @@ setInterval(() => {
             player.positionY < obstacleStoneInstance.positionY + obstacleStoneInstance.height &&
             player.positionY + player.height > obstacleStoneInstance.positionY
         ){
-            clearInterval(counter);
-            console.log("Final Score: " + (score -1));
+            clearInterval(counter); // stop counter
             endGameContainer.style.display = "block"
             gameBoard.style.display = "none"
-          
-            console.log(score);
-            
-            scoreContainer.innerText = 'Score: ' + score;
-            
-            
+            scoreContainer.innerText = 'Score: ' + score;           
+            clearInterval(stoneStop); // stop stones 
         }
     });
 
@@ -170,7 +188,7 @@ setInterval(() => {
 
 
 
-setInterval(() => {
+trunkStop = setInterval(() => {
     obstacleTrunkArr.forEach((obstacleTrunkInstance) => {
 
         
@@ -184,16 +202,11 @@ setInterval(() => {
             player.positionY + player.height > obstacleTrunkInstance.positionY
         ){
             
-            console.log("game over");
             clearInterval(counter);
-            console.log("Final Score: " + (score -1));
-            endGameContainer.style.display = "block"
-            gameBoard.style.display = "none"
-          
-            console.log(score);
-            
+            endGameContainer.style.display = "block" // will show Game over page
+            gameBoard.style.display = "none" // will hide game page
             scoreContainer.innerText = 'Score: ' + score;
-            
+            clearInterval(trunkStop); // trunks 
         }
     });
 
@@ -210,23 +223,39 @@ document.addEventListener('keydown', (e) => {
 });
 
 restartButton.addEventListener("click", () => {
-    window.location.reload()
-})
+    
+    endGameContainer.style.display = "none" // will hide Game over page
+    gameBoard.style.display = "block" // will show game page
+    startGameContainer.style.display = "none" // will hide Start Game page
+    scoreContainer.innerText = 'Score: ' + score;
+    startCounter ();
+});
+
+startButton.addEventListener("click", () => {
+
+    endGameContainer.style.display = "none" // will hide Game over page
+    gameBoard.style.display = "block" // will show game page
+    startGameContainer.style.display = "none" // will hide Start Game page
+    scoreContainer.innerText = 'Score: ' + score;
+    startCounter ();
+});
 
 
 
-window.onload = function startCounter(){
+
+function startCounter(){
     
     counter = setInterval(function(){
         scoreContainer.innerText = 'Score: ' + score;
         score++;
         if (score > 5000) {
             clearInterval(counter);
-            console.log(score - 1);
+            //console.log(score - 1);
             location.href = "gamestart.html";
         }
     }, 1000);
 };
+
 
 
 
