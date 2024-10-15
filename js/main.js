@@ -1,8 +1,14 @@
 
+let counter; // count the score during the game
+let score = 0;
+const scoreContainer = document.querySelector(".score")
+const endGameContainer = document.querySelector("#gameOver")
+const gameBoard = document.querySelector("#board")
+const restartButton = document.querySelector("#restart")
 
 class Player {
     constructor() {
-        this.width = 10;
+        this.width = 20;
         this.height = 10;
         this.positionX = 1;
         this.positionY = (this.height / 2) + 1;
@@ -23,7 +29,10 @@ class Player {
 
         //step3: append to the dom: `parentElm.appendChild()`
         const board = document.getElementById("board");
-        board.appendChild(this.domElement);
+        if(board){
+
+            board.appendChild(this.domElement);
+        }
     }
   
    moveUp() {
@@ -41,10 +50,11 @@ class Player {
 }
 
 
-class Obstacle {
+class ObstacleStone {
     constructor(){
-        this.width = Math.random()* 10;
-        this.height = Math.random()* 20;
+        this.width = Math.random() * (10 - 3) + 3; //Math.random() * (maxWidth - minWidth) + minWidth; calculates with a min and a max
+        //this.width = Math.random()* 10;
+        this.height = Math.random()* (15 -3) + 3;
         this.positionX = 100;
         this.positionY = Math.floor(Math.random() * (100 - this.height + 1)); // random number between 0 and (100 - this.height)
         this.domElement = null;
@@ -56,7 +66,7 @@ class Obstacle {
         this.domElement = document.createElement("div");
 
         // step2: add content or modify (ex. innerHTML...)
-        this.domElement.className = "obstacle";
+        this.domElement.className = "obstacleStone";
         this.domElement.style.width = this.width + "vw";
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
@@ -76,33 +86,39 @@ class Obstacle {
 
 const player = new Player();
 
-const obstacleArr = []; // will store instances of the class Obstacle
+const obstacleStoneArr = []; // will store instances of the class Obstacle
 
 
 // create obstacles
 setInterval(() => {
-    const newObstacle = new Obstacle();
-    obstacleArr.push(newObstacle);
+    const newObstacleStone = new ObstacleStone();
+    obstacleStoneArr.push(newObstacleStone);
 }, 1000);
 
 
 // update all obstacles
 setInterval(() => {
-    obstacleArr.forEach((obstacleInstance) => {
+    obstacleStoneArr.forEach((obstacleStoneInstance) => {
 
         // move current obstacle
-        obstacleInstance.moveLeft();
+        obstacleStoneInstance.moveLeft();
 
         // detect collision
         if (
-            player.positionX < obstacleInstance.positionX + obstacleInstance.width &&
-            player.positionX + player.width > obstacleInstance.positionX &&
-            player.positionY < obstacleInstance.positionY + obstacleInstance.height &&
-            player.positionY + player.height > obstacleInstance.positionY
+            player.positionX < obstacleStoneInstance.positionX + obstacleStoneInstance.width &&
+            player.positionX + player.width > obstacleStoneInstance.positionX &&
+            player.positionY < obstacleStoneInstance.positionY + obstacleStoneInstance.height &&
+            player.positionY + player.height > obstacleStoneInstance.positionY
         ){
-            //clearInterval(counter);
-            console.log("game over");
-            location.href = "gameover.html";
+            clearInterval(counter);
+            console.log("Final Score: " + (score -1));
+            endGameContainer.style.display = "block"
+            gameBoard.style.display = "none"
+          
+            console.log(score);
+            
+            scoreContainer.innerText = 'Score: ' + score;
+            
             
         }
     });
@@ -111,10 +127,10 @@ setInterval(() => {
 }, 50);
 
 
-class BiggerObstacle {
+class ObstacleTrunk {
     constructor(){
-        this.width = Math.random()* 10;
-        this.height = Math.random()* 30;
+        this.width = Math.random()* (10 -5) + 5;
+        this.height = Math.random()* (30 -5) + 5;
         this.positionX = 100;
         this.positionY = Math.floor(Math.random() * (100 - this.height + 1)); // random number between 0 and (100 - this.height)
         this.domElement = null;
@@ -122,17 +138,17 @@ class BiggerObstacle {
         this.createDomElement();
     }
     createDomElement() {
-        // step1: create the element
+        
         this.domElement = document.createElement("div");
 
-        // step2: add content or modify (ex. innerHTML...)
-        this.domElement.className = "biggerObstacle";
+        
+        this.domElement.className = "obstacleTrunk";
         this.domElement.style.width = this.width + "vw";
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
 
-        //step3: append to the dom: `parentElm.appendChild()`
+        
         const board = document.getElementById("board");
         board.appendChild(this.domElement);
     }
@@ -143,33 +159,40 @@ class BiggerObstacle {
 }
 
 
-const biggerObstacleArr = []; // will store instances of the class BiggerObstacle
+const obstacleTrunkArr = []; 
 
 
-// create obstacles
+
 setInterval(() => {
-    const newBiggerObstacle = new BiggerObstacle();
-    biggerObstacleArr.push(newBiggerObstacle);
+    const newObstacleTrunk = new ObstacleTrunk();
+    obstacleTrunkArr.push(newObstacleTrunk);
 }, 4000);
 
 
-// update all obstacles
+
 setInterval(() => {
-    biggerObstacleArr.forEach((biggerObstacleInstance) => {
+    obstacleTrunkArr.forEach((obstacleTrunkInstance) => {
 
-        // move current obstacle
-        biggerObstacleInstance.moveLeft();
+        
+        obstacleTrunkInstance.moveLeft();
 
-        // detect collision
+        
         if (
-            player.positionX < biggerObstacleInstance.positionX + biggerObstacleInstance.width &&
-            player.positionX + player.width > biggerObstacleInstance.positionX &&
-            player.positionY < biggerObstacleInstance.positionY + biggerObstacleInstance.height &&
-            player.positionY + player.height > biggerObstacleInstance.positionY
+            player.positionX < obstacleTrunkInstance.positionX + obstacleTrunkInstance.width &&
+            player.positionX + player.width > obstacleTrunkInstance.positionX &&
+            player.positionY < obstacleTrunkInstance.positionY + obstacleTrunkInstance.height &&
+            player.positionY + player.height > obstacleTrunkInstance.positionY
         ){
-            //clearInterval(counter);
+            
             console.log("game over");
-            location.href = "gameover.html";
+            clearInterval(counter);
+            console.log("Final Score: " + (score -1));
+            endGameContainer.style.display = "block"
+            gameBoard.style.display = "none"
+          
+            console.log(score);
+            
+            scoreContainer.innerText = 'Score: ' + score;
             
         }
     });
@@ -186,15 +209,21 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-window.onload = function counter(){
-    let score = 0;
-    let counter = setInterval(function(){
-        document.getElementById("scorePoints").innerHTML= 'Score: ' + score;
+restartButton.addEventListener("click", () => {
+    window.location.reload()
+})
+
+
+
+window.onload = function startCounter(){
+    
+    counter = setInterval(function(){
+        scoreContainer.innerText = 'Score: ' + score;
         score++;
-        if (score > 5) {
+        if (score > 5000) {
             clearInterval(counter);
             console.log(score - 1);
-            //location.href = "gamestart.html";
+            location.href = "gamestart.html";
         }
     }, 1000);
 };
@@ -208,51 +237,3 @@ window.onload = function counter(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-/*class Timer {
-    constructor() {
-        this.timeRemaining = timeRemaining;
-        this.duration = duration;
-
-        this.createDomElement();
-    }
-
-  
-    const duration = 120;
-  const minutes = Math.floor(timeRemaining / 60).toString().padStart(2, "0");
-  const seconds = (timeRemaining % 60).toString().padStart(2, "0");
-  
-
-  // Display the time remaining in the time remaining container
-  const timeRemainingContainer = document.getElementById("timeRemaining");
-  timeRemainingContainer.innerText = `${minutes}:${seconds}`;
-
-
-
-  let timer = 0 ;
-
-  function startTimer() {
-    timer = setInterval(function countingDown(){
-    
-    if(timeRemaining <= 0) {
-      clearInterval(timer);
-      showResults();
-    }
-
-    timeRemaining--;
-    timeRemainingContainer.innerText = `${Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0")}:${(quiz.timeRemaining % 60).toString().padStart(2, "0")}`;
-  }, 
-  1000);
-}
-startTimer();
-
-}*/

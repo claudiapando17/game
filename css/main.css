@@ -9,20 +9,34 @@ body {
     width: 100vw;
     position: relative;
     overflow: hidden;
+    background-image: url(../images/road.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center center ;
+    
 }
 
 #player {
-    background-color: rgb(240, 22, 95);
+    background-image: url('../images/yellow\ car.png');
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center center ;
     position: absolute;
 }
 
-.obstacle {
-    background-color: rgb(159, 255, 50);
+.obstacleStone {
+    background-image: url('../images/stone.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center ;
     position: absolute;
 }
 
-.biggerObstacle {
-    background-color: rgb(18, 187, 230);
+.obstacleTrunk {
+    background-image: url('../images/trunk.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center center ;
     position: absolute;
 }
 
@@ -33,10 +47,13 @@ body {
 
 #scorePoints {
     text-align: center;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     font-weight: bold;
     font-size: 25px;
     position: relative;
     margin: 10px;
 }
 
+#gameOver {
+    display:none
+}
