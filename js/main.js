@@ -5,6 +5,9 @@ let stoneStop;
 let stone = 0;
 let trunkStop;
 let trunk = 0;
+let stoneStart;
+let trunkStart;
+
 
 const scoreContainer = document.querySelector(".score")
 const endGameContainer = document.querySelector("#gameOver") // game over
@@ -113,7 +116,7 @@ const obstacleStoneArr = []; // will store instances of the class Obstacle
 
 
 // create obstacles
-setInterval(() => {
+stoneStart = setInterval(() => {
     const newObstacleStone = new ObstacleStone();
     obstacleStoneArr.push(newObstacleStone);
 }, 1000);
@@ -181,7 +184,7 @@ const obstacleTrunkArr = [];
 
 
 
-setInterval(() => {
+trunkStart = setInterval(() => {
     const newObstacleTrunk = new ObstacleTrunk();
     obstacleTrunkArr.push(newObstacleTrunk);
 }, 4000);
@@ -222,6 +225,9 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+
+//BUTTONS
+
 restartButton.addEventListener("click", () => {
     
     endGameContainer.style.display = "none" // will hide Game over page
@@ -229,19 +235,23 @@ restartButton.addEventListener("click", () => {
     startGameContainer.style.display = "none" // will hide Start Game page
     scoreContainer.innerText = 'Score: ' + score;
     startCounter ();
+    stoneStart ();
+    trunkStart ();
 });
 
 startButton.addEventListener("click", () => {
-
+    
     endGameContainer.style.display = "none" // will hide Game over page
     gameBoard.style.display = "block" // will show game page
     startGameContainer.style.display = "none" // will hide Start Game page
     scoreContainer.innerText = 'Score: ' + score;
     startCounter ();
+    stoneStart ();
+    trunkStart ();
 });
 
 
-
+//COUNTER
 
 function startCounter(){
     
