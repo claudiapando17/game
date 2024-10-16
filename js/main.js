@@ -1,36 +1,79 @@
 
 let counter; // count the score during the game
 let score = 0;
-let stoneStop;
-let stone = 0;
-let trunkStop;
-let trunk = 0;
-let stoneStart;
-let trunkStart;
-
-
-const scoreContainer = document.querySelector(".score")
-const endGameContainer = document.querySelector("#gameOver") // game over
-const gameBoard = document.querySelector("#board")// game over
-const restartButton = document.querySelector("#restart")// game over
-
-const startGameContainer = document.querySelector("#gameStart")// game start
-const startButton = document.querySelector("#start")// game start
+let stoneCreation; // creation stone obstacles
+let trunkCreation;
+let stoneMovement; // Movement of the stone obstacles
+let trunkMovement;
 
 
 
+const currentScoreContainer = document.querySelector(".currentScore");
+const finalScoreContainer = document.querySelector(".finalScore");
+const endGameContainer = document.querySelector("#gameOver");
+const gameBoard = document.querySelector("#board");
+const restartButton = document.querySelector("#restart");
+const startGameContainer = document.querySelector("#gameStart");
+const startButton = document.querySelector("#start");
 
+
+//GAME START
 
 startGameContainer.style.display = "block";
 startButton.style.display = "block";
-gameBoard.style.display = "none" ;
+gameBoard.style.display = "none";
+endGameContainer.style.display = "none";
 
 
 
+//BUTTONS
+
+startButton.addEventListener("click", () => {
+
+    endGameContainer.style.display = "none"; //hide game over page
+    gameBoard.style.display = "block";  //show game page
+    startGameContainer.style.display = "none"; //hide start game page
+
+    score = 0;
+    currentScoreContainer.innerText = 'Score: ' + score; //current score
+
+    startCounter();
+    startStoneCreation();
+    startTrunkCreation();
+
+});
 
 
+restartButton.addEventListener("click", () => {
+
+    endGameContainer.style.display = "none";
+    gameBoard.style.display = "block";
+    startGameContainer.style.display = "none";
+
+    score = 0;
+    currentScoreContainer.innerText = 'Score: ' + score; // current score
+    
+    clearInterval(stoneCreation); // stop stone creation
+    clearInterval(trunkCreation);
+
+    obstacleStoneArr.forEach((obstacleStoneInstance) => {   // remove stones from the board
+        obstacleStoneInstance.domElement.remove();
+    });
+    obstacleTrunkArr.forEach((obstacleTrunkInstance) => {   
+        obstacleTrunkInstance.domElement.remove();
+    });
+    obstacleStoneArr.length = 0; // empty stones array
+    obstacleTrunkArr.length = 0;
 
 
+    startCounter(); // restart counter
+    startStoneCreation(); // restart stone creation
+    startTrunkCreation(); 
+
+});
+
+
+//PLAYER
 
 class Player {
     constructor() {
@@ -43,32 +86,32 @@ class Player {
         this.createDomElement();
     }
     createDomElement() {
-        // step1: create the element
-        this.domElement = document.createElement("div");
+        
+        this.domElement = document.createElement("div"); // step1: create the element
 
-        // step2: add content or modify (ex. innerHTML...)
-        this.domElement.id = "player";
+        
+        this.domElement.id = "player"; // step2: add content or modify (ex. innerHTML...)
         this.domElement.style.width = this.width + "vw";
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
 
-        //step3: append to the dom: `parentElm.appendChild()`
-        const board = document.getElementById("board");
-        if(board){
+        
+        const board = document.getElementById("board"); //step3: append to the dom: `parentElm.appendChild()`
+        if (board) {
 
             board.appendChild(this.domElement);
         }
     }
-  
-   moveUp() {
-        if(this.positionY < 100 - this.height){
+
+    moveUp() {
+        if (this.positionY < 100 - this.height) {
             this.positionY++;
             this.domElement.style.bottom = this.positionY + "vh";
         }
     }
     moveDown() {
-        if(this.positionY > 0){
+        if (this.positionY > 0) {
             this.positionY--;
             this.domElement.style.bottom = this.positionY + "vh";
         }
@@ -76,33 +119,37 @@ class Player {
 }
 
 
+//OBSTACLES
+
+
+//STONES
+
 class ObstacleStone {
-    constructor(){
-        this.width = Math.random() * (10 - 3) + 3; //Math.random() * (maxWidth - minWidth) + minWidth; calculates with a min and a max
-        //this.width = Math.random()* 10;
-        this.height = Math.random()* (15 -3) + 3;
+    constructor() {
+        this.width = Math.random() * (10 - 3) + 3; //Math.random() * (maxWidth - minWidth) + minWidth c
+        this.height = Math.random() * (15 - 3) + 3;
         this.positionX = 100;
-        this.positionY = Math.floor(Math.random() * (100 - this.height + 1)); // random number between 0 and (100 - this.height)
+        this.positionY = Math.floor(Math.random() * (100 - this.height + 1)); 
         this.domElement = null;
 
         this.createDomElement();
     }
     createDomElement() {
-        // step1: create the element
-        this.domElement = document.createElement("div");
+        
+        this.domElement = document.createElement("div"); // step1: create the element
 
-        // step2: add content or modify (ex. innerHTML...)
-        this.domElement.className = "obstacleStone";
+        
+        this.domElement.className = "obstacleStone"; // step2: add content or modify (ex. innerHTML...)
         this.domElement.style.width = this.width + "vw";
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
 
-        //step3: append to the dom: `parentElm.appendChild()`
-        const board = document.getElementById("board");
+        
+        const board = document.getElementById("board"); //step3: append to the dom: `parentElm.appendChild()`
         board.appendChild(this.domElement);
     }
-    moveLeft(){
+    moveLeft() {
         this.positionX--;
         this.domElement.style.left = this.positionX + "vw";
     }
@@ -112,110 +159,115 @@ class ObstacleStone {
 
 const player = new Player();
 
-const obstacleStoneArr = []; // will store instances of the class Obstacle
+const obstacleStoneArr = []; // will store instances of the class ObstacleStone
 
 
-// create obstacles
-stoneStart = setInterval(() => {
-    const newObstacleStone = new ObstacleStone();
-    obstacleStoneArr.push(newObstacleStone);
-}, 1000);
+
+function startStoneCreation() { // create stones
+
+    stoneCreation = setInterval(() => {
+        const newObstacleStone = new ObstacleStone();
+        obstacleStoneArr.push(newObstacleStone);
+    }, 1000);
 
 
-// update all obstacles
-stoneStop = setInterval(() => {
-    obstacleStoneArr.forEach((obstacleStoneInstance) => {
 
-        // move current obstacle
-        obstacleStoneInstance.moveLeft();
+    stoneMovement = setInterval(() => {  // update all obstacles
+        obstacleStoneArr.forEach((obstacleStoneInstance) => {
+   
+            obstacleStoneInstance.moveLeft();  // move current obstacle
+       
+            if (
+                player.positionX < obstacleStoneInstance.positionX + obstacleStoneInstance.width && // detect collision
+                player.positionX + player.width > obstacleStoneInstance.positionX &&
+                player.positionY < obstacleStoneInstance.positionY + obstacleStoneInstance.height &&
+                player.positionY + player.height > obstacleStoneInstance.positionY
+            ) {
+                endGameContainer.style.display = "block"; // show game over page
+                gameBoard.style.display = "none"; // hide game page
+                finalScoreContainer.innerText = 'Score: ' + score;
 
-        // detect collision
-        if (
-            player.positionX < obstacleStoneInstance.positionX + obstacleStoneInstance.width &&
-            player.positionX + player.width > obstacleStoneInstance.positionX &&
-            player.positionY < obstacleStoneInstance.positionY + obstacleStoneInstance.height &&
-            player.positionY + player.height > obstacleStoneInstance.positionY
-        ){
-            clearInterval(counter); // stop counter
-            endGameContainer.style.display = "block"
-            gameBoard.style.display = "none"
-            scoreContainer.innerText = 'Score: ' + score;           
-            clearInterval(stoneStop); // stop stones 
-        }
-    });
+                clearInterval(counter); // stop counter
+                clearInterval(stoneCreation); // stop stones creation
+                clearInterval(trunkCreation);
+            }
+        });
 
-    
-}, 50);
+    }, 50)
+};
 
+
+//TRUNKS
 
 class ObstacleTrunk {
-    constructor(){
-        this.width = Math.random()* (10 -5) + 5;
-        this.height = Math.random()* (30 -5) + 5;
+    constructor() {
+        this.width = Math.random() * (10 - 5) + 5;
+        this.height = Math.random() * (30 - 5) + 5;
         this.positionX = 100;
-        this.positionY = Math.floor(Math.random() * (100 - this.height + 1)); // random number between 0 and (100 - this.height)
+        this.positionY = Math.floor(Math.random() * (100 - this.height + 1));
         this.domElement = null;
 
         this.createDomElement();
     }
     createDomElement() {
-        
+
         this.domElement = document.createElement("div");
 
-        
+
         this.domElement.className = "obstacleTrunk";
         this.domElement.style.width = this.width + "vw";
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
 
-        
+
         const board = document.getElementById("board");
         board.appendChild(this.domElement);
     }
-    moveLeft(){
+    moveLeft() {
         this.positionX--;
         this.domElement.style.left = this.positionX + "vw";
     }
 }
 
 
-const obstacleTrunkArr = []; 
+const obstacleTrunkArr = [];
 
 
+function startTrunkCreation() {
 
-trunkStart = setInterval(() => {
-    const newObstacleTrunk = new ObstacleTrunk();
-    obstacleTrunkArr.push(newObstacleTrunk);
-}, 4000);
+    trunkCreation = setInterval(() => {
+        const newObstacleTrunk = new ObstacleTrunk();
+        obstacleTrunkArr.push(newObstacleTrunk);
+    }, 4000);
 
 
+    trunkMovement = setInterval(() => {
+        obstacleTrunkArr.forEach((obstacleTrunkInstance) => {
 
-trunkStop = setInterval(() => {
-    obstacleTrunkArr.forEach((obstacleTrunkInstance) => {
+            obstacleTrunkInstance.moveLeft();
 
-        
-        obstacleTrunkInstance.moveLeft();
+            if (
+                player.positionX < obstacleTrunkInstance.positionX + obstacleTrunkInstance.width && // detect collision
+                player.positionX + player.width > obstacleTrunkInstance.positionX &&
+                player.positionY < obstacleTrunkInstance.positionY + obstacleTrunkInstance.height &&
+                player.positionY + player.height > obstacleTrunkInstance.positionY
+            ) {
+                endGameContainer.style.display = "block"; // show game over page
+                gameBoard.style.display = "none"; // hide game page
+                finalScoreContainer.innerText = 'Score: ' + score;
 
-        
-        if (
-            player.positionX < obstacleTrunkInstance.positionX + obstacleTrunkInstance.width &&
-            player.positionX + player.width > obstacleTrunkInstance.positionX &&
-            player.positionY < obstacleTrunkInstance.positionY + obstacleTrunkInstance.height &&
-            player.positionY + player.height > obstacleTrunkInstance.positionY
-        ){
-            
-            clearInterval(counter);
-            endGameContainer.style.display = "block" // will show Game over page
-            gameBoard.style.display = "none" // will hide game page
-            scoreContainer.innerText = 'Score: ' + score;
-            clearInterval(trunkStop); // trunks 
-        }
-    });
+                clearInterval(counter); // stop counter
+                clearInterval(stoneCreation);// stop stones creation
+                clearInterval(trunkCreation);
+            }
+        });
 
-    
-}, 50);
+    }, 50)
+};
 
+
+//PLAYER MOVEMENT
 
 document.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowUp') {
@@ -226,45 +278,31 @@ document.addEventListener('keydown', (e) => {
 });
 
 
-//BUTTONS
 
-restartButton.addEventListener("click", () => {
-    
-    endGameContainer.style.display = "none" // will hide Game over page
-    gameBoard.style.display = "block" // will show game page
-    startGameContainer.style.display = "none" // will hide Start Game page
-    scoreContainer.innerText = 'Score: ' + score;
-    startCounter ();
-    stoneStart ();
-    trunkStart ();
-});
-
-startButton.addEventListener("click", () => {
-    
-    endGameContainer.style.display = "none" // will hide Game over page
-    gameBoard.style.display = "block" // will show game page
-    startGameContainer.style.display = "none" // will hide Start Game page
-    scoreContainer.innerText = 'Score: ' + score;
-    startCounter ();
-    stoneStart ();
-    trunkStart ();
-});
 
 
 //COUNTER
 
-function startCounter(){
-    
-    counter = setInterval(function(){
-        scoreContainer.innerText = 'Score: ' + score;
+function startCounter() {
+
+    counter = setInterval(function () {
         score++;
-        if (score > 5000) {
+        currentScoreContainer.innerText = 'Score: ' + score;
+        if (score > 4999) {
+
+            endGameContainer.style.display = "block";
+            gameBoard.style.display = "none";
+            finalScoreContainer.innerText = 'Score: ' + score;
+
             clearInterval(counter);
-            //console.log(score - 1);
-            location.href = "gamestart.html";
+            clearInterval(stoneCreation); // stop stones creation
+            clearInterval(trunkCreation);
+
         }
     }, 1000);
 };
+
+
 
 
 
