@@ -118,6 +118,18 @@ class Player {
             this.domElement.style.bottom = this.positionY + "vh";
         }
     }
+    moveRight() {
+        if(this.positionX < 100 - this.width){
+            this.positionX++;
+            this.domElement.style.left = this.positionX + "vw";
+        }
+    }
+    moveLeft() {
+        if(this.positionX > 0){
+            this.positionX--;
+            this.domElement.style.left = this.positionX + "vw";
+        }
+    }
 }
 
 
@@ -276,6 +288,11 @@ document.addEventListener('keydown', (e) => {
         player.moveUp();
     } else if (e.code === 'ArrowDown') {
         player.moveDown();
+    }
+      else if (e.code === 'ArrowLeft') {
+        player.moveLeft();
+    } else if (e.code === 'ArrowRight') {
+        player.moveRight();
     }
 });
 
