@@ -43,6 +43,8 @@ startButton.addEventListener("click", () => {
     startTrunkCreation();
     startSong.play();
 
+   
+
 });
 
 
@@ -73,7 +75,15 @@ restartButton.addEventListener("click", () => {
     startCounter(); // restart counter
     startStoneCreation(); // restart stone creation
     startTrunkCreation();
+    
+    player.positionX = 1; 
+    player.positionY = (player.height / 2) + 1;
+    player.domElement.style.left = player.positionX + "vw";
+    player.domElement.style.bottom = player.positionY + "vh";
+
+    startSong.currentTime = 0; 
     startSong.play();
+    
 
 });
 
@@ -82,8 +92,8 @@ restartButton.addEventListener("click", () => {
 
 class Player {
     constructor() {
-        this.width = 20;
-        this.height = 10;
+        this.width = 12;
+        this.height = 12;
         this.positionX = 1;
         this.positionY = (this.height / 2) + 1;
         this.domElement = null;

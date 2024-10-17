@@ -9,6 +9,18 @@ h1 {
     margin:5px 0 0 0;  
 }
 
+#yellowCrash{
+    margin-top: 100px; 
+    color: black;
+    font-size: 50px;
+}
+
+#yellowCrashEnd{
+    margin-top: 150px; 
+    color: black;
+    font-size: 50px;
+}
+
 h2 {
     margin: 0 0 10px;  
     color: white;
@@ -52,12 +64,11 @@ img{
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-
 }
 
 #player {
     background-image: url('../images/car.png');
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     position: absolute;
@@ -78,8 +89,6 @@ img{
     background-position: center center;
     position: absolute;
 }
-
-
 
 #gameStart {
     display: flex;
