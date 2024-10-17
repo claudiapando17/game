@@ -6,14 +6,43 @@ body {
 }
 
 h1 {
-    margin:10px 0 0 0;  
+    margin:5px 0 0 0;  
 }
 
 h2 {
-    margin:0;  
+    margin: 0 0 10px;  
+    color: white;
+    font-size: 25px;
+}
+
+p{
     color: white;
     font-size: 20px;
+    line-height:2px;
+    display: inline-block;
 }
+
+#moveInstructions{
+    margin: 
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    display: inline-block;
+}
+
+img{
+    width:30px;
+    height: auto;
+    display: inline-block;
+}
+
+#keyboardImg{
+    width: 70px;
+    height: auto;
+    position: relative;
+    display: inline-block;
+    position: relative;
+}
+
 
 #board {
     height: 100vh;
