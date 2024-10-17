@@ -15,6 +15,8 @@ const gameBoard = document.querySelector("#board");
 const restartButton = document.querySelector("#restart");
 const startGameContainer = document.querySelector("#gameStart");
 const startButton = document.querySelector("#start");
+const startSong = document.querySelector("#song");
+const crashSound = document.querySelector("#crash");
 
 
 //GAME START
@@ -23,7 +25,6 @@ startGameContainer.style.display = "block";
 startButton.style.display = "block";
 gameBoard.style.display = "none";
 endGameContainer.style.display = "none";
-
 
 
 //BUTTONS
@@ -40,6 +41,7 @@ startButton.addEventListener("click", () => {
     startCounter();
     startStoneCreation();
     startTrunkCreation();
+    startSong.play();
 
 });
 
@@ -71,6 +73,7 @@ restartButton.addEventListener("click", () => {
     startCounter(); // restart counter
     startStoneCreation(); // restart stone creation
     startTrunkCreation();
+    startSong.play();
 
 });
 
@@ -201,9 +204,14 @@ function startStoneCreation() { // create stones
                 gameBoard.style.display = "none"; // hide game page
                 finalScoreContainer.innerText = 'Score: ' + score;
 
+                startSong.pause();
+                crashSound.play();
                 clearInterval(counter); // stop counter
                 clearInterval(stoneCreation); // stop stones creation
+                clearInterval(stoneMovement);
                 clearInterval(trunkCreation);
+                clearInterval(trunkMovement);
+                
             }
         });
 
@@ -271,9 +279,14 @@ function startTrunkCreation() {
                 gameBoard.style.display = "none"; // hide game page
                 finalScoreContainer.innerText = 'Score: ' + score;
 
+                startSong.pause();
+                crashSound.play();
                 clearInterval(counter); // stop counter
                 clearInterval(stoneCreation);// stop stones creation
+                clearInterval(stoneMovement);
                 clearInterval(trunkCreation);
+                clearInterval(trunkMovement);
+                
             }
         });
 
