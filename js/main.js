@@ -52,14 +52,16 @@ restartButton.addEventListener("click", () => {
 
     score = 0;
     currentScoreContainer.innerText = 'Score: ' + score; // current score
-    
+
     clearInterval(stoneCreation); // stop stone creation
     clearInterval(trunkCreation);
+    clearInterval(stoneMovement);
+    clearInterval(trunkMovement);
 
     obstacleStoneArr.forEach((obstacleStoneInstance) => {   // remove stones from the board
         obstacleStoneInstance.domElement.remove();
     });
-    obstacleTrunkArr.forEach((obstacleTrunkInstance) => {   
+    obstacleTrunkArr.forEach((obstacleTrunkInstance) => {
         obstacleTrunkInstance.domElement.remove();
     });
     obstacleStoneArr.length = 0; // empty stones array
@@ -68,7 +70,7 @@ restartButton.addEventListener("click", () => {
 
     startCounter(); // restart counter
     startStoneCreation(); // restart stone creation
-    startTrunkCreation(); 
+    startTrunkCreation();
 
 });
 
@@ -86,17 +88,17 @@ class Player {
         this.createDomElement();
     }
     createDomElement() {
-        
+
         this.domElement = document.createElement("div"); // step1: create the element
 
-        
+
         this.domElement.id = "player"; // step2: add content or modify (ex. innerHTML...)
         this.domElement.style.width = this.width + "vw";
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
 
-        
+
         const board = document.getElementById("board"); //step3: append to the dom: `parentElm.appendChild()`
         if (board) {
 
@@ -129,23 +131,23 @@ class ObstacleStone {
         this.width = Math.random() * (10 - 3) + 3; //Math.random() * (maxWidth - minWidth) + minWidth c
         this.height = Math.random() * (15 - 3) + 3;
         this.positionX = 100;
-        this.positionY = Math.floor(Math.random() * (100 - this.height + 1)); 
+        this.positionY = Math.floor(Math.random() * (100 - this.height + 1));
         this.domElement = null;
 
         this.createDomElement();
     }
     createDomElement() {
-        
+
         this.domElement = document.createElement("div"); // step1: create the element
 
-        
+
         this.domElement.className = "obstacleStone"; // step2: add content or modify (ex. innerHTML...)
         this.domElement.style.width = this.width + "vw";
         this.domElement.style.height = this.height + "vh";
         this.domElement.style.left = this.positionX + "vw";
         this.domElement.style.bottom = this.positionY + "vh";
 
-        
+
         const board = document.getElementById("board"); //step3: append to the dom: `parentElm.appendChild()`
         board.appendChild(this.domElement);
     }
@@ -174,9 +176,9 @@ function startStoneCreation() { // create stones
 
     stoneMovement = setInterval(() => {  // update all obstacles
         obstacleStoneArr.forEach((obstacleStoneInstance) => {
-   
+
             obstacleStoneInstance.moveLeft();  // move current obstacle
-       
+
             if (
                 player.positionX < obstacleStoneInstance.positionX + obstacleStoneInstance.width && // detect collision
                 player.positionX + player.width > obstacleStoneInstance.positionX &&

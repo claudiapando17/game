@@ -1,7 +1,13 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: rgb(199, 214, 238);
+    background-color: rgb(0, 0, 0);
+    font-family:'Courier New', Courier, monospace;
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #board {
@@ -17,7 +23,7 @@ body {
 }
 
 #player {
-    background-image: url('../images/yellow\ car.png');
+    background-image: url('../images/car.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -40,20 +46,96 @@ body {
     position: absolute;
 }
 
-#page-gameover {
+
+
+#gameStart {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    background-image: url(../images/car\ start.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    width: 75vw;
+    height: 75vh;
+    border: 5px solid rgb(255, 208, 0);
+    font-weight: bold;
+    font-size: 60px; 
+    color: rgb(255, 208, 0);
+    text-align:center;
+    margin: 40px auto;
+    border-radius: .25rem;
+} 
+
+
+#start {
+    flex:auto;
+    align-self: center;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 50%;
+    border-radius: .25rem;
+    cursor: pointer;
+    padding: 10px 20px;
+    color: rgb(0, 0, 0);
+    width: 30%;
+    height: 15%;
+    margin-left: 35%;
+    margin-right: 35%;
+}
+
+
+#gameOver {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    background-image: url(../images/car\ game\ over.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    width: 75vw;
+    height: 75vh;
+    border: 5px solid rgb(255, 208, 0);
+    font-weight: bold;
+    font-size: 60px; 
+    color: rgb(255, 208, 0);
     text-align: center;
-    background-color: rgb(166, 161, 171);
+    margin: 40px auto;
+    border-radius: .25rem;
 }
 
 #scorePoints {
     text-align: center;
-    color: rgb(255, 255, 255);
     font-weight: bold;
-    font-size: 25px;
-    position: relative;
-    margin: 10px;
+    font-size: 20px;
+    position:relative;
+    margin: 1px;
+    font-family:'Courier New', Courier, monospace;
+    align-items: center;
+    align-content: center;
+    cursor: pointer;
+    padding: 10px 20px;
+    color: rgb(255, 255, 255);
 }
 
-#gameOver {
-    display: none;
+#restart {
+    flex:auto;
+    align-self: center;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 50%;
+    border-radius: .25rem;
+    cursor: pointer;
+    padding: 10px 20px;
+    color: rgb(0, 0, 0);
+    width: 30%;
+    height: 15%;
+    margin-left: 35%;
+    margin-right: 35%;
 }
