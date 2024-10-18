@@ -43,7 +43,7 @@ startButton.addEventListener("click", () => {
     startTrunkCreation();
     startSong.play();
 
-   
+
 
 });
 
@@ -75,15 +75,15 @@ restartButton.addEventListener("click", () => {
     startCounter(); // restart counter
     startStoneCreation(); // restart stone creation
     startTrunkCreation();
-    
-    player.positionX = 1; 
+
+    player.positionX = 1; // restart player position
     player.positionY = (player.height / 2) + 1;
     player.domElement.style.left = player.positionX + "vw";
     player.domElement.style.bottom = player.positionY + "vh";
 
-    startSong.currentTime = 0; 
+    startSong.currentTime = 0;
     startSong.play();
-    
+
 
 });
 
@@ -132,13 +132,13 @@ class Player {
         }
     }
     moveRight() {
-        if(this.positionX < 100 - this.width){
+        if (this.positionX < 100 - this.width) {
             this.positionX++;
             this.domElement.style.left = this.positionX + "vw";
         }
     }
     moveLeft() {
-        if(this.positionX > 0){
+        if (this.positionX > 0) {
             this.positionX--;
             this.domElement.style.left = this.positionX + "vw";
         }
@@ -221,7 +221,7 @@ function startStoneCreation() { // create stones
                 clearInterval(stoneMovement);
                 clearInterval(trunkCreation);
                 clearInterval(trunkMovement);
-                
+
             }
         });
 
@@ -296,7 +296,7 @@ function startTrunkCreation() {
                 clearInterval(stoneMovement);
                 clearInterval(trunkCreation);
                 clearInterval(trunkMovement);
-                
+
             }
         });
 
@@ -312,7 +312,7 @@ document.addEventListener('keydown', (e) => {
     } else if (e.code === 'ArrowDown') {
         player.moveDown();
     }
-      else if (e.code === 'ArrowLeft') {
+    else if (e.code === 'ArrowLeft') {
         player.moveLeft();
     } else if (e.code === 'ArrowRight') {
         player.moveRight();
